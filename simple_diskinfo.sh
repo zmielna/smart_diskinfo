@@ -1,18 +1,16 @@
 #/bin/bash
 declare -a SMART_COMMAND
 
+# https://www.backblaze.com/blog/hard-drive-smart-stats/
+# Number 187 reports the number of reads that could not be corrected using hardware ECC.
+# Drives with 0 uncorrectable errors hardly ever fail. This is one of the SMART stats we usei
+# to determine hard drive failure; once SMART 187 goes above 0, we schedule the drive for replacement.
+
 echo "Checking Disks For Important Smart Errors..."
-for I in $(ls /sys/block); do
+for I in $(ls /sys/block/|grep sd); do
   SMART_COMMAND="smartctl -a /dev/$I"
   SERIAL="$(smartctl -a /dev/$I | grep -i serial)"
-
   echo "DISK $I - $SERIAL"
-  $SMART_COMMAND | grep -v "\-       0" | grep Raw_Read_Error_Rate
-  $SMART_COMMAND | grep -v "\-       0" | grep Reallocated_Event_Count
-  $SMART_COMMAND | grep -v "\-       0" | grep Reallocated_Sector_Count
-  $SMART_COMMAND | grep -v "\-       0" | grep Reported_Uncorrectable_Errors
-  $SMART_COMMAND | grep -v "\-       0" | grep Command_Timeout
-  $SMART_COMMAND | grep -v "\-       0" | grep Current_Pending_Sector_Count
-  $SMART_COMMAND | grep -v "\-       0" | grep Offline_Uncorrectable
+  $SMART_COMMAND |egrep '^  5|^187|^188|^197|^198'
   echo "----------------"
 done
