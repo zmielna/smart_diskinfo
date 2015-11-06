@@ -4,7 +4,8 @@
 # see https://www.backblaze.com/blog/hard-drive-smart-stats/
 # This is Check_mk local check script for FreeBSD based NAS like NAS4FREE
 # Drop a copy to /usr/lib/check_mk_agent/local/
-# then "telnet nas4free.domain.com 6556" from your OMD server 
+# you can "telnet nas4free.domain.com 6556" from your OMD server to see if it works.
+#
 #    SMART 5 \u2013 Reallocated_Sector_Count.
 #    SMART 187 \u2013 Reported_Uncorrectable_Errors.
 #    SMART 188 \u2013 Command_Timeout.
